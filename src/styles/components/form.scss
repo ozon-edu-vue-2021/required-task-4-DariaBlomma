@@ -1,0 +1,80 @@
+.form {
+    &__personal-info {
+        display: grid;
+        grid-column-gap: 10px;
+        grid-template-areas: 
+        "surname name patronym"
+        "birthdate email email"
+        "gender gender gender";
+    }
+}
+
+// fieldset, .personal-info-inputs {
+//     display: flex;
+//     flex-direction: column;
+//     background-color: $light;
+// }
+
+
+
+.personal-info {
+    div {
+        margin-right: $margin-normal;
+    }
+}
+
+.address-group {
+    grid-area: b;
+}
+
+.pass-group {
+    grid-area: c;
+}
+
+.sms-label {
+    align-self: center;
+}
+
+.submit {
+    grid-area: d;
+    margin: auto;
+    padding: $padding-normal $margin-normal;
+    color: $dark;
+    margin-top: $margin-normal;
+    background-color: $btn-color;
+}
+
+
+label.birthdate, label.pass-date-label {
+    display: grid;
+    grid-template-areas: 
+    'a c'
+    'b b';
+    padding-right: 8px;
+    margin-top: $margin-normal;
+}
+
+input[placeholder='Дата рождения'], input[placeholder='Дата выдачи'] {
+    grid-area: b;
+}
+
+.birthdate::after, .pass-date-label::after {
+    grid-area: c;
+    justify-self: end;
+}
+
+
+@media (max-width: 460px) {
+    form {
+        grid-template-areas: 
+        'a'
+        'b'
+        'c'
+        'e'
+        'd';
+    }
+
+    .common-info {
+        flex-direction: column;
+    }
+}

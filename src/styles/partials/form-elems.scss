@@ -1,0 +1,60 @@
+legend {
+    font-weight: bold;
+    color: $dark;
+}
+
+input, select {
+    margin-top: $margin-normal; 
+    padding: $padding-normal;
+    width: 100%;
+    min-height: 34px;
+}
+
+select {
+    width: 95%;
+}
+
+option {
+    padding: $padding-normal;
+}
+
+input[type='radio'] {
+    width: 15px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+label {
+    margin-bottom: 10px;
+}
+
+label.required, label.optional {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.required::after  {
+    color: $red;
+    content: ' * ';
+    position: absolute;
+    right: 0;
+    top: 10px;
+}
+
+// .required::after, .optional::after {
+//     color: $red;
+//     content: ' * ';
+// }
+
+// .optional::after {
+//     visibility: hidden;
+// }
+
