@@ -7,6 +7,23 @@
         "birthdate email email"
         "gender gender gender";
     }
+
+    &__email {
+        grid-area: email;
+    }
+
+    &__gender {
+        grid-area: gender;
+        display: grid-column-gap;
+        grid-template-areas: 
+        "title title"
+        "male female";
+    }
+
+    &__gender-line {
+        display: flex;
+        align-items: center;
+    }
 }
 
 // fieldset, .personal-info-inputs {
@@ -17,11 +34,11 @@
 
 
 
-.personal-info {
-    div {
-        margin-right: $margin-normal;
-    }
-}
+// .personal-info {
+//     div {
+//         margin-right: $margin-normal;
+//     }
+// }
 
 .address-group {
     grid-area: b;
@@ -45,23 +62,23 @@
 }
 
 
-label.birthdate, label.pass-date-label {
-    display: grid;
-    grid-template-areas: 
-    'a c'
-    'b b';
-    padding-right: 8px;
-    margin-top: $margin-normal;
-}
+// label.birthdate, label.pass-date-label {
+//     display: grid;
+//     grid-template-areas: 
+//     'a c'
+//     'b b';
+//     padding-right: 8px;
+//     margin-top: $margin-normal;
+// }
 
-input[placeholder='Дата рождения'], input[placeholder='Дата выдачи'] {
-    grid-area: b;
-}
+// input[placeholder='Дата рождения'], input[placeholder='Дата выдачи'] {
+//     grid-area: b;
+// }
 
-.birthdate::after, .pass-date-label::after {
-    grid-area: c;
-    justify-self: end;
-}
+// .birthdate::after, .pass-date-label::after {
+//     grid-area: c;
+//     justify-self: end;
+// }
 
 
 @media (max-width: 460px) {

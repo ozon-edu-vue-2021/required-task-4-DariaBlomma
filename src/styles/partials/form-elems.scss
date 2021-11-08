@@ -3,11 +3,15 @@ legend {
     color: $dark;
 }
 
+fieldset {
+    margin-bottom: 15px;
+}
+
 input, select {
     margin-top: $margin-normal; 
     padding: $padding-normal;
     width: 100%;
-    min-height: 34px;
+    height: 45px;
 }
 
 select {
@@ -20,6 +24,9 @@ option {
 
 input[type='radio'] {
     width: 15px;
+    height: 15px;
+    margin-top: 0;
+    margin-right: 15px;
 }
 
 input::-webkit-outer-spin-button,

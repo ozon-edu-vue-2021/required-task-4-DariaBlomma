@@ -7,21 +7,21 @@
       </p>
       <fieldset class="form__personal-info">
         <legend>Личные данные</legend>
-        <label class="surname-elem required">
+        <label class="form__surname required">
           Фамилия
-          <input type="text" name="surname" class="surname" required />
+          <input type="text" name="surname" required />
         </label>
-        <label class="name-elem required">
+        <label class="form__name required">
           Имя
-          <input type="text" name="name" class="name" required />
+          <input type="text" name="name" required />
         </label>
-        <label class="patronym-elem optional">
+        <label class="form__patronym optional">
           Отчество
-          <input type="text" name="patronym" class="patronym" />
+          <input type="text" name="patronym" />
         </label>
-        <label class="birthdate-elem required birthdate">
+        <label class="form__birthdate required birthdate">
           Дата рождения
-          <input type="date" name="birthdate" class="birthdate" required />
+          <input type="date" name="birthdate" required />
           <!-- <input
             type="text"
             name="birthdate"
@@ -30,13 +30,13 @@
             required
           /> -->
         </label>
-        <label class="email-elem optional">
+        <label class="form__email optional">
           Email
-          <input type="email" name="email" class="email" placeholder="Email" />
+          <input type="email" name="email"  placeholder="Email" />
         </label>
-        <div class="gender-wrapper">
+        <div class="form__gender">
           <h3>Пол</h3>
-          <span>
+          <div class="form__gender-line">
             <input
               type="radio"
               name="gender"
@@ -45,11 +45,11 @@
               checked
             />
             Мужской
-          </span>
-          <span>
+          </div>
+          <div class="form__gender-line">
             <input type="radio" name="gender" class="female" value="female" />
             Женский
-          </span>
+          </div>
         </div>
       </fieldset>
       <fieldset class="pass-group">
