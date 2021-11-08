@@ -3,15 +3,17 @@ legend {
     color: $dark;
 }
 
+fieldset {
+    margin-bottom: 15px;
+}
+
 input, select {
     margin-top: $margin-normal; 
     padding: $padding-normal;
     width: 100%;
-    min-height: 34px;
-}
-
-select {
-    width: 95%;
+    height: 45px;
+    padding: 5px;
+    padding-left: 10px;
 }
 
 option {
@@ -20,6 +22,9 @@ option {
 
 input[type='radio'] {
     width: 15px;
+    height: 15px;
+    margin-top: 0;
+    margin-right: 15px;
 }
 
 input::-webkit-outer-spin-button,
@@ -35,13 +40,21 @@ label {
     margin-bottom: 10px;
 }
 
-label.required, label.optional {
+.required, .optional, .required-example {
     display: flex;
     flex-direction: column;
     position: relative;
 }
 
-.required::after  {
+.required-example {
+    font-style: italic;
+    max-width: fit-content;
+    margin-left: 15px;
+    padding-left: 5px;
+    margin-bottom: 10px;
+}
+
+.required::after, .required-example::after  {
     color: $red;
     content: ' * ';
     position: absolute;
@@ -49,12 +62,11 @@ label.required, label.optional {
     top: 10px;
 }
 
-// .required::after, .optional::after {
-//     color: $red;
-//     content: ' * ';
-// }
+.required-example::after {
+    left: -15px;
+    top: -5px;
+}
 
-// .optional::after {
-//     visibility: hidden;
-// }
-
+.btn:disabled {
+    opacity: 0.6;
+}
