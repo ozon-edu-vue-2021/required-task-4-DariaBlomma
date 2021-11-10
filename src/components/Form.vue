@@ -1,6 +1,12 @@
 <template>
   <div class="form-wrapper">
-    <form id="form" name="form" class="form" @submit.prevent="sendForm">
+    <form
+      id="form"
+      name="form"
+      class="form"
+      @submit.prevent="sendForm"
+      @click="closeDropdown"
+    >
       <span class="required-example">Поле обязательное для заполнения</span>
       <fieldset class="personal-info">
         <legend>Личные данные</legend>
@@ -83,20 +89,33 @@
         <legend>Паспортные данные</legend>
         <div class="pass__citizenship-wrapper required">
           Гражданство
-          <select
-            class="pass__citizenship"
-            name="citizenship"
-            required
-            v-model="formData.citizenship"
-          >
-            <option
-              v-for="item in citizenships"
-              :key="item.id"
-              :value="item.nationality"
-            >
-              {{ item.nationality }}
-            </option>
-          </select>
+          <div class="pass__citizenship-dropdown-wrapper">
+            <input
+              type="text"
+              class="pass__citizenship dropdown-input"
+              name="citizenship"
+              required
+              v-model="formData.citizenship"
+              @focus="openCitizenhipDropdown"
+            />
+            <div v-if="citizenshipDropdownOpened">
+              <ul
+                class="pass__citizenship-dropdown dropdown"
+                v-if="filteredCitizenships.length"
+                @click="chooseFromCitizenshipDropdown"
+              >
+                <li
+                  class="dropdown-elem"
+                  v-for="item in filteredCitizenships"
+                  :key="item.id"
+                  :value="item.nationality"
+                >
+                  {{ item.nationality }}
+                </li>
+              </ul>
+              <div class="empty-dropdown" v-else>Ничего не найдено</div>
+            </div>
+          </div>
         </div>
         <div class="pass__country-wrapper required" v-if="isForeigner">
           Страна выдачи
@@ -244,6 +263,7 @@
 <script>
 import citizenships from "@/assets/data/citizenships.json";
 import passTypes from "@/assets/data/passport-types.json";
+import { throttle } from "@/helpers/throttle";
 
 export default {
   data() {
@@ -256,7 +276,7 @@ export default {
         email: "",
         genderChosen: "male",
         changedInitials: "no",
-        citizenship: "Russia",
+        citizenship: "",
         foreignSurname: "",
         foreignName: "",
         passCountry: "",
@@ -268,6 +288,8 @@ export default {
         formerName: "",
       },
       formSent: false,
+      citizenshipDropdownOpened: false,
+      // filteredCitizenships: citizenships,
       // formDone: false,
       // json files
       citizenships,
@@ -281,9 +303,46 @@ export default {
     hasChangedInitials() {
       return this.formData.changedInitials === "yes";
     },
+    // filteredCitizenships() {
+    //   return this.citizenships.filter((item) =>
+    //     item.nationality.toLowerCase().includes(this.formData.citizenship)
+    //   );
+    // },
+    // eslint-disable-next-line vue/return-in-computed-property
+    filteredCitizenships() {
+      console.log("computed ");
+      if (this.formData.citizenship === "") {
+        return this.citizenships;
+      }
+
+      console.log("call", this.filterCitizenships(this.citizenships, this.formData.citizenship));
+      return this.filterCitizenships(this.citizenships, this.formData.citizenship);
+    },
   },
 
   methods: {
+    openCitizenhipDropdown() {
+      this.citizenshipDropdownOpened = true;
+    },
+    chooseFromCitizenshipDropdown({ target }) {
+      if (target.matches(".dropdown-elem")) {
+        this.formData.citizenship = target.textContent.trim();
+      }
+    },
+    closeDropdown({ target }) {
+      if (!target.closest(".dropdown-input")) {
+        this.citizenshipDropdownOpened = false;
+      }
+    },
+    // todo: !!!
+    filterCitizenships: throttle((arr, field) => {
+      return arr.filter((item) =>
+        item.nationality.toLowerCase().includes(field)
+      );
+    }, 200),
+    // this.citizenships.filter((item) =>
+    //   item.nationality.toLowerCase().includes(this.formData.citizenship)
+    // );
     sendForm() {
       this.formSent = true;
       console.log("formData", JSON.stringify(this.formData));

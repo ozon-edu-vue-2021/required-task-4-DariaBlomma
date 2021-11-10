@@ -47,8 +47,22 @@
         "surname . name"
     ;
 
+    &__citizenship-dropdown-wrapper {
+        position: relative;
+    }
+
     &__citizenship {
         grid-area: citizenship;
+    }
+
+    &__citizenship-dropdown {
+        position: absolute;
+        width: 100%;
+        z-index: 1;
+        background-color: white;
+        height: 220px;
+        overflow-y: scroll;
+        border: 1px solid black;
     }
 
     &__country-wrapper {
