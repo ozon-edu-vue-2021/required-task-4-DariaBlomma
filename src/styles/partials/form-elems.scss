@@ -1,30 +1,31 @@
 legend {
     font-weight: bold;
-    color: $dark;
+    color: $dark-blue-color;
 }
 
 fieldset {
-    margin-bottom: 15px;
+    margin-bottom: $standart-margin;
 }
 
 input, select {
-    margin-top: $margin-normal; 
-    padding: $padding-normal;
+    margin-top: $smaller-margin; 
+    padding: $standart-padding;
     width: 100%;
     height: 45px;
     padding: 5px;
-    padding-left: 10px;
+    padding-left: $smaller-padding;
 }
 
 option {
-    padding: $padding-normal;
+    padding: $smaller-padding;
 }
 
+// inputs
 input[type='radio'] {
-    width: 15px;
-    height: 15px;
+    width: $input-radio-size;
+    height: $input-radio-size;
     margin-top: 0;
-    margin-right: 15px;
+    margin-right: $standart-margin;
 }
 
 input::-webkit-outer-spin-button,
@@ -36,8 +37,23 @@ input[type='number'] {
     -moz-appearance: textfield;
 }
 
-label {
-    margin-bottom: 10px;
+input:focus, input:focus-visible, select:focus, select:focus-visible {
+    outline: 1px solid $dark-blue-color;
+}
+
+input[type='radio']:focus, input[type='radio']:focus-visible, input[type='checkbox']:focus, input[type='checkbox']:focus-visible {
+    outline: none;
+    border: none;
+}
+
+label, .label {
+    margin-bottom: $smaller-margin;
+    color: $gray-color;
+    font-size: 0.9rem;
+}
+
+.label {
+    margin-bottom: 0;
 }
 
 .required, .optional, .required-example {
@@ -49,21 +65,21 @@ label {
 .required-example {
     font-style: italic;
     max-width: fit-content;
-    margin-left: 15px;
+    margin-left: $standart-margin;
     padding-left: 5px;
-    margin-bottom: 10px;
+    margin-bottom: $smaller-margin;
 }
 
 .required::after, .required-example::after  {
-    color: $red;
+    color: $red-invalid-color;
     content: ' * ';
     position: absolute;
     right: 0;
-    top: 10px;
+    top: $smaller-margin;
 }
 
 .required-example::after {
-    left: -15px;
+    left: -$standart-margin;
     top: -5px;
 }
 

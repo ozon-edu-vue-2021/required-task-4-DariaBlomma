@@ -1,12 +1,12 @@
 .form {
-    padding: 10px 0;
+    padding: $smaller-padding 0;
     max-width: 900px;
     margin: 0 auto;
 }
 
 .personal-info {
     display: grid;
-    grid-column-gap: 10px;
+    grid-column-gap: $smaller-padding;
     grid-template-areas: 
     "surname name patronym"
     "birthdate email email"
@@ -26,7 +26,7 @@
     &__body {
         display: flex;
         justify-content: space-around;
-        margin-top: 10px;
+        margin-top: $smaller-margin;
     }
 
     &__line {
@@ -37,8 +37,8 @@
 
 .pass {
     display: grid;
-    grid-column-gap: 10px;
-    grid-row-gap: 10px;
+    grid-column-gap: $smaller-padding;
+    grid-row-gap: $smaller-padding;
     grid-template-areas: 
         "citizenship . . "
         "foreignSurname . foreignName"
@@ -53,16 +53,6 @@
 
     &__citizenship {
         grid-area: citizenship;
-    }
-
-    &__citizenship-dropdown {
-        position: absolute;
-        width: 100%;
-        z-index: 1;
-        background-color: white;
-        height: 220px;
-        overflow-y: scroll;
-        border: 1px solid black;
     }
 
     &__country-wrapper {
@@ -83,6 +73,9 @@
 
     .for-foreigners-info {
         grid-area: info;
+        color: $darker-gray-color;
+        font-size: 0.8rem;
+        margin-bottom: $standart-margin;
     }
 
     &__serie {
@@ -104,7 +97,7 @@
         &__body {
             display: flex;
             justify-content: space-around;
-            margin-top: 10px;
+            margin-top: $smaller-margin;
         }
 
         &__surname {
@@ -134,10 +127,7 @@
 
 .submit {
     display: flex;
-    margin: 10px auto;
-    padding: $padding-normal $margin-normal;
-    color: $dark;
-    background-color: $btn-color;
+    margin: $smaller-margin auto;
 }
 
 // @media (max-width: 460px) {

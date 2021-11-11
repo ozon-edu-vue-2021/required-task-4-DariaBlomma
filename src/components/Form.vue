@@ -88,7 +88,7 @@
       <fieldset :class="['pass', { 'foreign': isForeigner }]">
         <legend>Паспортные данные</legend>
         <div class="pass__citizenship-wrapper required">
-          Гражданство
+          <span class="label">Гражданство</span>
           <div class="pass__citizenship-dropdown-wrapper">
             <input
               type="text"
@@ -114,12 +114,17 @@
                   {{ item.nationality }}
                 </li>
               </ul>
-              <div class="empty-dropdown" v-else>Ничего не найдено</div>
+              <div
+                class="pass__citizenship-dropdown dropdown empty-dropdown"
+                v-else
+              >
+                Ничего не найдено
+              </div>
             </div>
           </div>
         </div>
         <div class="pass__country-wrapper required" v-if="isForeigner">
-          Страна выдачи
+          <span class="label">Страна выдачи</span>
           <select
             class="pass__country"
             name="country"
@@ -136,7 +141,7 @@
           </select>
         </div>
         <div class="pass__type-wrapper required" v-if="isForeigner">
-          Тип паспорта
+          <span class="label">Тип паспорта</span>
           <select
             class="pass__type"
             name="type"
@@ -327,7 +332,7 @@ export default {
     filterCitizenships() {
       this.throttledFilterCitizenships = throttle(
         this.throttledFilterCitizenships,
-        2000
+        1000
       );
       this.throttledFilterCitizenships();
     },
