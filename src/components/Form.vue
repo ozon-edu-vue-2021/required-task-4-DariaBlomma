@@ -97,6 +97,7 @@
               required
               v-model="formData.citizenship"
               @focus="openCitizenhipDropdown"
+              @input="filterCitizenships"
             />
             <div v-if="citizenshipDropdownOpened">
               <ul
@@ -289,7 +290,7 @@ export default {
       },
       formSent: false,
       citizenshipDropdownOpened: false,
-      // filteredCitizenships: citizenships,
+      filteredCitizenships: citizenships,
       // formDone: false,
       // json files
       citizenships,
@@ -303,23 +304,7 @@ export default {
     hasChangedInitials() {
       return this.formData.changedInitials === "yes";
     },
-    // filteredCitizenships() {
-    //   return this.citizenships.filter((item) =>
-    //     item.nationality.toLowerCase().includes(this.formData.citizenship)
-    //   );
-    // },
-    // eslint-disable-next-line vue/return-in-computed-property
-    filteredCitizenships() {
-      console.log("computed ");
-      if (this.formData.citizenship === "") {
-        return this.citizenships;
-      }
-
-      console.log("call", this.filterCitizenships(this.citizenships, this.formData.citizenship));
-      return this.filterCitizenships(this.citizenships, this.formData.citizenship);
-    },
   },
-
   methods: {
     openCitizenhipDropdown() {
       this.citizenshipDropdownOpened = true;
@@ -334,15 +319,18 @@ export default {
         this.citizenshipDropdownOpened = false;
       }
     },
-    // todo: !!!
-    filterCitizenships: throttle((arr, field) => {
-      return arr.filter((item) =>
-        item.nationality.toLowerCase().includes(field)
+    throttledFilterCitizenships() {
+      this.filteredCitizenships = this.citizenships.filter((item) =>
+        item.nationality.toLowerCase().includes(this.formData.citizenship)
       );
-    }, 200),
-    // this.citizenships.filter((item) =>
-    //   item.nationality.toLowerCase().includes(this.formData.citizenship)
-    // );
+    },
+    filterCitizenships() {
+      this.throttledFilterCitizenships = throttle(
+        this.throttledFilterCitizenships,
+        2000
+      );
+      this.throttledFilterCitizenships();
+    },
     sendForm() {
       this.formSent = true;
       console.log("formData", JSON.stringify(this.formData));

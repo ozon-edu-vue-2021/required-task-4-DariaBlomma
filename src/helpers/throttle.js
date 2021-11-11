@@ -6,7 +6,6 @@ export function throttle(f, t) {
 
     if (previousCall === undefined || Date.now() - previousCall > t) {
       calls.lastCall = Date.now();
-      console.log("calls.lastCall: ", calls.lastCall);
       f(args);
     }
   };
