@@ -1,12 +1,6 @@
 <template>
   <div class="form-wrapper">
-    <form
-      id="form"
-      name="form"
-      class="form"
-      @submit.prevent="sendForm"
-      @click="closeDropdown"
-    >
+    <form id="form" name="form" class="form" @submit.prevent="sendForm">
       <span class="required-example">Поле обязательное для заполнения</span>
       <fieldset class="personal-info">
         <legend>Личные данные</legend>
@@ -89,69 +83,53 @@
         <legend>Паспортные данные</legend>
         <div class="pass__citizenship-wrapper required">
           <span class="label">Гражданство</span>
-          <div class="pass__citizenship-dropdown-wrapper">
-            <input
-              type="text"
-              class="pass__citizenship dropdown-input"
-              name="citizenship"
-              required
-              v-model="formData.citizenship"
-              @focus="openCitizenhipDropdown"
-              @input="filterCitizenships"
-            />
-            <div v-if="citizenshipDropdownOpened">
-              <ul
-                class="pass__citizenship-dropdown dropdown"
-                v-if="filteredCitizenships.length"
-                @click="chooseFromCitizenshipDropdown"
-              >
-                <li
-                  class="dropdown-elem"
-                  v-for="item in filteredCitizenships"
-                  :key="item.id"
-                  :value="item.nationality"
-                >
-                  {{ item.nationality }}
-                </li>
-              </ul>
-              <div
-                class="pass__citizenship-dropdown dropdown empty-dropdown"
-                v-else
-              >
-                Ничего не найдено
-              </div>
-            </div>
-          </div>
+          <!-- debounce = 250 by default -->
+          <v-super-select
+            class="pass__citizenship"
+            :items="citizenships"
+            value-field="nationality"
+            text-field="nationality"
+            :show-value="false"
+            :value="formData.passCountry"
+            placeholder="Выберите гражданство "
+            none-found-text="Ничего не найдено"
+            input-width="100%"
+            input-height="45px"
+            :debounceTime="500"
+            @change="selectCitizenshipDropdown"
+          />
         </div>
         <div class="pass__country-wrapper required" v-if="isForeigner">
           <span class="label">Страна выдачи</span>
-          <select
+          <v-super-select
             class="pass__country"
-            name="country"
-            required
-            v-model="formData.passCountry"
-          >
-            <option
-              v-for="item in citizenships"
-              :key="item.id"
-              :value="item.nationality"
-            >
-              {{ item.nationality }}
-            </option>
-          </select>
+            :items="citizenships"
+            value-field="nationality"
+            text-field="nationality"
+            :show-value="false"
+            :value="formData.passCountry"
+            placeholder="Выберите страну"
+            none-found-text="Ничего не найдено"
+            input-width="100%"
+            input-height="45px"
+            @change="selectPassCountryDropdown"
+          />
         </div>
         <div class="pass__type-wrapper required" v-if="isForeigner">
           <span class="label">Тип паспорта</span>
-          <select
+          <v-super-select
             class="pass__type"
-            name="type"
-            required
-            v-model="formData.passType"
-          >
-            <option v-for="item in passTypes" :key="item.id" :value="item.type">
-              {{ item.type }}
-            </option>
-          </select>
+            :items="passTypes"
+            value-field="type"
+            text-field="type"
+            :show-value="false"
+            :value="formData.passType"
+            placeholder="Выберите тип"
+            none-found-text="Ничего не найдено"
+            input-width="100%"
+            input-height="45px"
+            @change="selectPassTypeDropdown"
+          />
         </div>
         <label class="foreign-surname required" v-if="isForeigner">
           Фамилия на латинице
@@ -269,9 +247,11 @@
 <script>
 import citizenships from "@/assets/data/citizenships.json";
 import passTypes from "@/assets/data/passport-types.json";
-import { throttle } from "@/helpers/throttle";
+import VSuperSelect from "v-super-select";
 
 export default {
+  name: "Form",
+  components: { VSuperSelect },
   data() {
     return {
       formData: {
@@ -294,13 +274,14 @@ export default {
         formerName: "",
       },
       formSent: false,
-      citizenshipDropdownOpened: false,
-      filteredCitizenships: citizenships,
       // formDone: false,
       // json files
       citizenships,
       passTypes,
     };
+  },
+  created() {
+    this.filterUniqueNationalities();
   },
   computed: {
     isForeigner() {
@@ -311,30 +292,31 @@ export default {
     },
   },
   methods: {
-    openCitizenhipDropdown() {
-      this.citizenshipDropdownOpened = true;
-    },
-    chooseFromCitizenshipDropdown({ target }) {
-      if (target.matches(".dropdown-elem")) {
-        this.formData.citizenship = target.textContent.trim();
-      }
-    },
-    closeDropdown({ target }) {
-      if (!target.closest(".dropdown-input")) {
-        this.citizenshipDropdownOpened = false;
-      }
-    },
-    throttledFilterCitizenships() {
-      this.filteredCitizenships = this.citizenships.filter((item) =>
-        item.nationality.toLowerCase().includes(this.formData.citizenship)
+    // нужно для v-super-select, для его внутреннего key
+    // key = пропса value + index + "item", извне не меняется
+    // пропс value также отвечает за v-model, поэтому его нельзя изменить на уникальный id
+    filterUniqueNationalities() {
+      this.citizenships = this.citizenships.sort((a, b) =>
+        a.nationality > b.nationality
+          ? 1
+          : b.nationality > a.nationality
+          ? -1
+          : 0
       );
+      this.citizenships = this.citizenships.filter((value, index, array) => {
+        if (array[index - 1]) {
+          return array[index - 1].nationality !== value.nationality;
+        }
+      });
     },
-    filterCitizenships() {
-      this.throttledFilterCitizenships = throttle(
-        this.throttledFilterCitizenships,
-        1000
-      );
-      this.throttledFilterCitizenships();
+    selectCitizenshipDropdown(value) {
+      this.formData.citizenship = value;
+    },
+    selectPassTypeDropdown(value) {
+      this.formData.passType = value;
+    },
+    selectPassCountryDropdown(value) {
+      this.formData.passCountry = value;
     },
     sendForm() {
       this.formSent = true;

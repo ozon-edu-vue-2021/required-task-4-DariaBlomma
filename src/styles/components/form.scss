@@ -63,6 +63,15 @@
         grid-area: type;
     }
 
+    &__type, &__country, &__citizenship {
+        margin-top: $smaller-margin;
+    }
+
+    // v-super-select dropdowns
+    &__type div, &__country div, &__citizenship div {
+        width: 100% !important;
+    }
+
     .foreign-surname {
         grid-area: foreignSurname;
     }
