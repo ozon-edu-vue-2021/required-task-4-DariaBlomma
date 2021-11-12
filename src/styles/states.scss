@@ -1,47 +1,24 @@
 // form
-input:focus, input:focus-visible, select:focus, select:focus-visible {
-    outline: 1px solid $focus;
+.invalid {
+    outline: 1px solid $red-invalid-color;
 }
 
-input[type='radio']:focus, input[type='radio']:focus-visible, input[type='checkbox']:focus, input[type='checkbox']:focus-visible {
-    outline: none;
-    border: none;
-}
-
-
-
-input.invalid {
-    outline: 1px solid $red;
-}
-
-input.valid {
-    outline: 1px solid $green;
-}
-
-.submit:hover {
-    background-color: $btn-hover;
-}
-
-.submit:active {
-    background-color: $btn-active;
+.valid {
+    outline: 1px solid $green-valid-color;
 }
 
 .form__must-mark, .error-message {
-    color: $red;
+    color: $red-invalid-color;
 }
 
-
-
-
 .error-message {
-    margin: $margin-normal 0;
+    margin: $standart-margin 0;
     margin-bottom: 0;
-    font-size: $small;
+    // font-size: $small;
 }
 
 .success-sent {
-    color: green;
-    grid-area: e;
+    color: $green-valid-color;
     margin: auto;
-    margin-top: $margin-normal;
+    margin-top: $standart-margin;
 }

@@ -1,97 +1,144 @@
 .form {
-    &__personal-info {
-        display: grid;
-        grid-column-gap: 10px;
-        grid-template-areas: 
-        "surname name patronym"
-        "birthdate email email"
-        "gender gender gender";
+    padding: $smaller-padding 0;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.personal-info {
+    display: grid;
+    grid-column-gap: $smaller-padding;
+    grid-template-areas: 
+    "surname name patronym"
+    "birthdate email email"
+    "gender gender gender";
+}
+.email {
+    grid-area: email;
+}
+
+.gender {
+    grid-area: gender;
+
+    &__title {
+        text-align: center;
     }
 
-    &__email {
-        grid-area: email;
+    &__body {
+        display: flex;
+        justify-content: space-around;
+        margin-top: $smaller-margin;
     }
 
-    &__gender {
-        grid-area: gender;
-        display: grid-column-gap;
-        grid-template-areas: 
-        "title title"
-        "male female";
-    }
-
-    &__gender-line {
+    &__line {
         display: flex;
         align-items: center;
     }
 }
 
-// fieldset, .personal-info-inputs {
-//     display: flex;
-//     flex-direction: column;
-//     background-color: $light;
-// }
+.pass {
+    display: grid;
+    grid-column-gap: $smaller-padding;
+    grid-row-gap: $smaller-padding;
+    grid-template-areas: 
+        "citizenship . . "
+        "foreignSurname . foreignName"
+        "serie number date"
+        "radio radio radio"
+        "surname . name"
+    ;
 
+    &__citizenship-dropdown-wrapper {
+        position: relative;
+    }
 
+    &__citizenship {
+        grid-area: citizenship;
+    }
 
-// .personal-info {
-//     div {
-//         margin-right: $margin-normal;
-//     }
-// }
+    &__country-wrapper {
+        grid-area: country;
+    }
 
-.address-group {
-    grid-area: b;
+    &__type-wrapper {
+        grid-area: type;
+    }
+
+    &__type, &__country, &__citizenship {
+        margin-top: $smaller-margin;
+    }
+
+    // v-super-select dropdowns
+    &__type div, &__country div, &__citizenship div {
+        width: 100% !important;
+    }
+
+    .foreign-surname {
+        grid-area: foreignSurname;
+    }
+
+    .foreign-name {
+        grid-area: foreignName;
+    }
+
+    .for-foreigners-info {
+        grid-area: info;
+        color: $darker-gray-color;
+        font-size: 0.8rem;
+        margin-bottom: $standart-margin;
+    }
+
+    &__serie {
+        grid-area: serie;
+    }
+
+    &__number {
+        grid-area: number;
+    }
+
+    &__date {
+        grid-area: date
+    }
+
+    .changed-initials {
+        grid-area: radio;
+        justify-self: center;
+
+        &__body {
+            display: flex;
+            justify-content: space-around;
+            margin-top: $smaller-margin;
+        }
+
+        &__surname {
+            grid-area: surname;
+        }
+
+        &__name {
+            grid-area: name;
+        }
+    }
 }
 
-.pass-group {
-    grid-area: c;
+.pass.foreign {
+    grid-template-areas: 
+    "citizenship . . "
+    "foreignSurname . foreignName"
+    "info info info"
+    "number country type"
+    "radio radio radio"
+    "surname . name"
+    ;
 }
 
-.sms-label {
-    align-self: center;
+.success-sent {
+    text-align: center;
 }
 
 .submit {
-    grid-area: d;
-    margin: auto;
-    padding: $padding-normal $margin-normal;
-    color: $dark;
-    margin-top: $margin-normal;
-    background-color: $btn-color;
+    display: flex;
+    margin: $smaller-margin auto;
 }
 
+// @media (max-width: 460px) {
 
-// label.birthdate, label.pass-date-label {
-//     display: grid;
-//     grid-template-areas: 
-//     'a c'
-//     'b b';
-//     padding-right: 8px;
-//     margin-top: $margin-normal;
 // }
-
-// input[placeholder='Дата рождения'], input[placeholder='Дата выдачи'] {
-//     grid-area: b;
-// }
-
-// .birthdate::after, .pass-date-label::after {
-//     grid-area: c;
-//     justify-self: end;
-// }
-
-
-@media (max-width: 460px) {
-    form {
-        grid-template-areas: 
-        'a'
-        'b'
-        'c'
-        'e'
-        'd';
-    }
-
-    .common-info {
-        flex-direction: column;
-    }
-}
