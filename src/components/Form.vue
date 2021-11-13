@@ -4,53 +4,50 @@
       <span class="required-example">Поле обязательное для заполнения</span>
       <fieldset class="personal-info">
         <legend>Личные данные</legend>
-        <label class="surname required">
-          Фамилия
-          <input
-            type="text"
-            name="surname"
-            placeholder="Иванов"
-            required
-            v-model="formData.surname"
-          />
-        </label>
-        <label class="name required">
-          Имя
-          <input
-            type="text"
-            name="name"
-            placeholder="Иван"
-            required
-            v-model="formData.name"
-          />
-        </label>
-        <label class="patronym optional">
-          Отчество
-          <input
-            type="text"
-            name="patronym"
-            placeholder="Иванович"
-            v-model="formData.patronym"
-          />
-        </label>
-        <label class="birthdate required">
-          Дата рождения
-          <input
-            type="date"
-            name="birthdate"
-            required
-            v-model="formData.birthdate"
-          />
-        </label>
-        <label class="email optional">
-          Email
-          <input
-            type="email"
-            name="email"
-            placeholder="ivanov@yandex.ru"
-            v-model="formData.email"
-          />
-        </label>
+        <Input
+          block-class="surname"
+          label="Фамилия"
+          is-required
+          placeholder="Иванов"
+          error-message="Введите русские буквы"
+          validator="ruLetters"
+          @send-field-info="collectFormData"
+        />
+        <Input
+          block-class="name"
+          label="Имя"
+          is-required
+          placeholder="Иван"
+          error-message="Введите русские буквы"
+          validator="ruLetters"
+          @send-field-info="collectFormData"
+        />
+        <Input
+          block-class="patronym"
+          label="Отчество"
+          placeholder="Иванович"
+          error-message="Введите русские буквы"
+          validator="ruLetters"
+          @send-field-info="collectFormData"
+        />
+        <Input
+          block-class="birthdate"
+          input-type="date"
+          label="Дата рождения"
+          is-required
+          error-message="Введите валидную дату"
+          validator="date"
+          @send-field-info="collectFormData"
+        />
+        <Input
+          block-class="email"
+          input-type="email"
+          label="Email"
+          placeholder="ivanov@yandex.ru"
+          error-message="Введите валидный email"
+          validator="email"
+          @send-field-info="collectFormData"
+        />
         <div class="gender">
           <div class="gender__title">Пол</div>
           <div class="gender__body">
@@ -77,110 +74,144 @@
           </div>
         </div>
       </fieldset>
-      <fieldset :class="['pass', { 'foreign': isForeigner }]">
+      <fieldset :class="['pass', { foreign: isForeigner }]">
         <legend>Паспортные данные</legend>
         <div class="pass__citizenship-wrapper required">
           <span class="label">Гражданство</span>
           <!-- debounce = 250 by default -->
           <v-super-select
+            :class="{
+              invalid: formData.citizenship.value && !selectCitizenshipValid,
+              valid: selectCitizenshipValid,
+            }"
             class="pass__citizenship"
             :items="citizenships"
             value-field="nationality"
             text-field="nationality"
             :show-value="false"
-            :value="formData.passCountry"
+            :value="formData.citizenship.value"
             placeholder="Выберите гражданство "
             none-found-text="Ничего не найдено"
             input-width="100%"
             input-height="45px"
             :debounceTime="500"
             @change="selectCitizenshipDropdown"
+            @opened="citizenshipSelectOpened"
           />
+          <span
+            v-if="formData.citizenship.value && !selectCitizenshipValid"
+            class="error-message"
+          >
+            Выберите гражданство
+          </span>
         </div>
         <div class="pass__country-wrapper required" v-if="isForeigner">
           <span class="label">Страна выдачи</span>
           <v-super-select
+            :class="{
+              invalid: formData.passCountry.value && !selectPassCountryValid,
+              valid: selectPassCountryValid,
+            }"
             class="pass__country"
             :items="citizenships"
             value-field="nationality"
             text-field="nationality"
             :show-value="false"
-            :value="formData.passCountry"
+            :value="formData.passCountry.value"
             placeholder="Выберите страну"
             none-found-text="Ничего не найдено"
             input-width="100%"
             input-height="45px"
             @change="selectPassCountryDropdown"
+            @opened="passCountrySelectOpened"
           />
+          <span
+            v-if="formData.passCountry.value && !selectPassCountryValid"
+            class="error-message"
+          >
+            Выберите страну
+          </span>
         </div>
         <div class="pass__type-wrapper required" v-if="isForeigner">
           <span class="label">Тип паспорта</span>
           <v-super-select
+            :class="{
+              invalid: formData.passType.value && !selectPassTypeValid,
+              valid: selectPassTypeValid,
+            }"
             class="pass__type"
             :items="passTypes"
             value-field="type"
             text-field="type"
             :show-value="false"
-            :value="formData.passType"
+            :value="formData.passType.value"
             placeholder="Выберите тип"
             none-found-text="Ничего не найдено"
             input-width="100%"
             input-height="45px"
             @change="selectPassTypeDropdown"
+            @opened="passTypeSelectOpened"
           />
+          <span
+            v-if="formData.passType.value && !selectPassTypeValid"
+            class="error-message"
+          >
+            Выберите тип
+          </span>
         </div>
-        <label class="foreign-surname required" v-if="isForeigner">
-          Фамилия на латинице
-          <input
-            type="text"
-            name="foreign-surname"
-            placeholder="Ivanov"
-            required
-            v-model="formData.foreignSurname"
-          />
-        </label>
-        <label class="foreign-name required" v-if="isForeigner">
-          Имя на латинице
-          <input
-            type="text"
-            name="foreign-name"
-            placeholder="Ivan"
-            required
-            v-model="formData.foreignName"
-          />
-        </label>
-        <span class="for-foreigners-info" v-if="isForeigner"
+        <Input
+          v-if="isForeigner"
+          block-class="foreign-surname"
+          label="Фамилия на латинице"
+          is-required
+          placeholder="Ivanov"
+          error-message="Введите фвмилию на латинице"
+          validator="enLetters"
+          @send-field-info="collectFormData"
+        />
+        <Input
+          v-if="isForeigner"
+          block-class="foreign-name"
+          label="Имя на латинице"
+          is-required
+          placeholder="Ivan"
+          error-message="Введите имя на латинице"
+          validator="enLetters"
+          @send-field-info="collectFormData"
+        />
+        <span v-if="isForeigner" class="for-foreigners-info"
           >Иностранцы заполняют ланинскими буквами
         </span>
-        <label class="pass__serie required" v-if="!isForeigner">
-          Серия
-          <input
-            type="number"
-            name="serie"
-            placeholder="1234"
-            v-model="formData.passSerie"
-          />
-        </label>
-        <label class="pass__number required">
-          Номер
-          <input
-            type="number"
-            name="number"
-            class="length6"
-            placeholder="123456"
-            v-model="formData.passNumber"
-          />
-        </label>
-        <label class="pass__date optional" v-if="!isForeigner">
-          Дата выдачи
-          <input
-            type="date"
-            name="pass__date"
-            placeholder="Дата выдачи"
-            required
-            v-model="formData.passDate"
-          />
-        </label>
+        <Input
+          v-if="!isForeigner"
+          block-class="pass__serie"
+          input-type="number"
+          label="Серия"
+          is-required
+          placeholder="1234"
+          error-message="Введите 4 цифры"
+          validator="length4"
+          @send-field-info="collectFormData"
+        />
+        <Input
+          block-class="pass__number"
+          input-type="number"
+          label="Номер"
+          is-required
+          placeholder="123456"
+          error-message="Введите 6 цифр"
+          validator="length6"
+          @send-field-info="collectFormData"
+        />
+        <Input
+          v-if="!isForeigner"
+          block-class="pass__date"
+          input-type="date"
+          label="Дата выдачи"
+          error-message="Введите валидную дату"
+          validator="date"
+          @send-field-info="collectFormData"
+        />
         <div class="changed-initials">
           Меняли ли фамилию или имя?
           <div class="changed-initials__body">
@@ -206,38 +237,33 @@
             </label>
           </div>
         </div>
-        <label
-          class="changed-initials__surname required"
+        <Input
           v-if="hasChangedInitials"
-        >
-          Прежняя фамилия
-          <input
-            type="text"
-            name="former-surname"
-            class="surname"
-            required
-            v-model="formData.formerSurname"
-          />
-        </label>
-        <label
-          class="changed-initials__name required"
+          block-class="changed-initials__surname"
+          label="Прежняя фамилия"
+          placeholder="Иванов"
+          error-message="Введите русские буквы"
+          validator="ruLetters"
+          is-required
+          @send-field-info="collectFormData"
+        />
+        <Input
           v-if="hasChangedInitials"
-        >
-          Прежнее имя
-          <input
-            type="text"
-            name="former-name"
-            class="name"
-            required
-            v-model="formData.formerName"
-          />
-        </label>
+          block-class="changed-initials__name"
+          label="Прежнее имя"
+          placeholder="Иван"
+          error-message="Введите русские буквы"
+          validator="ruLetters"
+          is-required
+          @send-field-info="collectFormData"
+        />
       </fieldset>
       <p class="success-sent" v-if="formSent">
         Ваши данные успешно отправлены!
       </p>
-      <!-- <button type="submit" class="btn submit" :disabled="!formDone"> -->
-      <button type="submit" class="btn submit">Отправить</button>
+      <button type="submit" class="btn submit" :disabled="!formDone">
+        Отправить
+      </button>
     </form>
   </div>
 </template>
@@ -246,33 +272,40 @@
 import citizenships from "@/assets/data/citizenships.json";
 import passTypes from "@/assets/data/passport-types.json";
 import VSuperSelect from "v-super-select";
+import Input from "@/components/Input.vue";
 
 export default {
   name: "Form",
-  components: { VSuperSelect },
+  components: { VSuperSelect, Input },
   data() {
     return {
       formData: {
-        surname: "",
-        name: "",
-        patronym: "",
-        birthdate: "",
-        email: "",
-        genderChosen: "male",
         changedInitials: "no",
-        citizenship: "",
-        foreignSurname: "",
-        foreignName: "",
-        passCountry: "",
-        passType: "",
-        passSerie: "",
-        passNumber: "",
-        passDate: "",
-        formerSurname: "",
-        formerName: "",
+        genderChosen: "male",
+        citizenship: {
+          required: true,
+          value: "",
+          selected: false,
+          opened: false,
+        },
+        passType: {
+          required: this.isForeigner ? true : false,
+          value: "",
+          selected: false,
+          opened: false,
+        },
+        passCountry: {
+          required: this.isForeigner ? true : false,
+          value: "",
+          selected: false,
+          opened: false,
+        },
       },
+      requiredLength: 0,
+      requiredFilledLength: 0,
+      invalidLength: 0,
+      ruLettersCheck: true,
       formSent: false,
-      // formDone: false,
       // json files
       citizenships,
       passTypes,
@@ -283,10 +316,40 @@ export default {
   },
   computed: {
     isForeigner() {
-      return this.formData.citizenship !== "Russia";
+      return (
+        this.formData.citizenship.value !== "Russia" &&
+        this.formData.citizenship.value !== ""
+      );
     },
     hasChangedInitials() {
       return this.formData.changedInitials === "yes";
+    },
+    formDone() {
+      return (
+        this.requiredLength === this.requiredFilledLength &&
+        this.invalidLength === 0
+      );
+    },
+    selectCitizenshipValid() {
+      return (
+        this.formData.citizenship.value &&
+        this.formData.citizenship.opened === true &&
+        this.formData.citizenship.selected === true
+      );
+    },
+    selectPassCountryValid() {
+      return (
+        this.formData.passCountry.value &&
+        this.formData.passCountry.opened === true &&
+        this.formData.passCountry.selected === true
+      );
+    },
+    selectPassTypeValid() {
+      return (
+        this.formData.passType.value &&
+        this.formData.passType.opened === true &&
+        this.formData.passType.selected === true
+      );
     },
   },
   methods: {
@@ -310,13 +373,53 @@ export default {
       });
     },
     selectCitizenshipDropdown(value) {
-      this.formData.citizenship = value;
+      this.formData.citizenship.value = value;
+      this.formData.citizenship.selected = true;
     },
     selectPassTypeDropdown(value) {
-      this.formData.passType = value;
+      this.formData.passType.value = value;
+      this.formData.passType.selected = true;
     },
     selectPassCountryDropdown(value) {
-      this.formData.passCountry = value;
+      this.formData.passCountry.value = value;
+      this.formData.passCountry.selected = true;
+    },
+    citizenshipSelectOpened() {
+      this.formData.citizenship.opened = true;
+      this.formData.citizenship.selected = false;
+    },
+    passCountrySelectOpened() {
+      this.formData.passCountry.opened = true;
+      this.formData.passCountry.selected = false;
+    },
+    passTypeSelectOpened() {
+      this.formData.passType.opened = true;
+      this.formData.passType.selected = false;
+    },
+    collectFormData(field) {
+      this.formData[field.name] = field;
+      this.updateFormDoneStatus();
+    },
+    updateFormDoneStatus() {
+      let requiredLength = 0;
+      let requiredFilledLength = 0;
+      let invalidLength = 0;
+      Object.values(this.formData).forEach((item) => {
+        if (item.required === true) {
+          requiredLength++;
+          if (item.value !== "") {
+            requiredFilledLength++;
+          }
+        }
+
+        if (item.valid === false) {
+          invalidLength++;
+        }
+      });
+
+      this.requiredLength = requiredLength;
+      this.requiredFilledLength = requiredFilledLength;
+      this.invalidLength = invalidLength;
     },
     sendForm() {
       this.formSent = true;

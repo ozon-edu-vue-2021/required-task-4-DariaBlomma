@@ -12,9 +12,9 @@
 }
 
 .error-message {
+    display: block;
     margin: $standart-margin 0;
-    margin-bottom: 0;
-    // font-size: $small;
+    margin-bottom: $standart-margin;
 }
 
 .success-sent {

@@ -32,3 +32,7 @@
     background-color: #adadad;
     color: $dark-blue-color;
 }
+
+.btn:disabled {
+    opacity: 0.3;
+}
