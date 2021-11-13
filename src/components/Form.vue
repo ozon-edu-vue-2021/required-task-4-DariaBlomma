@@ -200,7 +200,7 @@
           is-required
           placeholder="123456"
           error-message="Введите 6 цифр"
-          validator="length6"
+          :validator="passNumberValidator"
           @send-field-info="collectFormData"
         />
         <Input
@@ -350,6 +350,9 @@ export default {
         this.formData.passType.opened === true &&
         this.formData.passType.selected === true
       );
+    },
+    passNumberValidator() {
+      return this.isForeigner ? "" : "length6";
     },
   },
   methods: {
