@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "normalize.css": "^8.0.1",
+    "v-super-select": "^0.2.12",
     "vue": "^2.6.11",
     "vue-svg-loader": "^0.16.0",
     "vuedraggable": "^2.24.3"
@@ -22,7 +24,9 @@
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^6.2.2",
+    "node-sass": "^4.12.0",
     "prettier": "^2.2.1",
+    "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
   }
 }

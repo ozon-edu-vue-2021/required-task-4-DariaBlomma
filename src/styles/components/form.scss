@@ -1,0 +1,144 @@
+.form {
+    padding: $smaller-padding 0;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.personal-info {
+    display: grid;
+    grid-column-gap: $smaller-padding;
+    grid-template-areas: 
+    "surname name patronym"
+    "birthdate email email"
+    "gender gender gender";
+}
+.email {
+    grid-area: email;
+}
+
+.gender {
+    grid-area: gender;
+
+    &__title {
+        text-align: center;
+    }
+
+    &__body {
+        display: flex;
+        justify-content: space-around;
+        margin-top: $smaller-margin;
+    }
+
+    &__line {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.pass {
+    display: grid;
+    grid-column-gap: $smaller-padding;
+    grid-row-gap: $smaller-padding;
+    grid-template-areas: 
+        "citizenship . . "
+        "foreignSurname . foreignName"
+        "serie number date"
+        "radio radio radio"
+        "surname . name"
+    ;
+
+    &__citizenship-dropdown-wrapper {
+        position: relative;
+    }
+
+    &__citizenship {
+        grid-area: citizenship;
+    }
+
+    &__country-wrapper {
+        grid-area: country;
+    }
+
+    &__type-wrapper {
+        grid-area: type;
+    }
+
+    &__type, &__country, &__citizenship {
+        margin-top: $smaller-margin;
+    }
+
+    // v-super-select dropdowns
+    &__type div, &__country div, &__citizenship div {
+        width: 100% !important;
+    }
+
+    .foreign-surname {
+        grid-area: foreignSurname;
+    }
+
+    .foreign-name {
+        grid-area: foreignName;
+    }
+
+    .for-foreigners-info {
+        grid-area: info;
+        color: $darker-gray-color;
+        font-size: 0.8rem;
+        margin-bottom: $standart-margin;
+    }
+
+    &__serie {
+        grid-area: serie;
+    }
+
+    &__number {
+        grid-area: number;
+    }
+
+    &__date {
+        grid-area: date
+    }
+
+    .changed-initials {
+        grid-area: radio;
+        justify-self: center;
+
+        &__body {
+            display: flex;
+            justify-content: space-around;
+            margin-top: $smaller-margin;
+        }
+
+        &__surname {
+            grid-area: surname;
+        }
+
+        &__name {
+            grid-area: name;
+        }
+    }
+}
+
+.pass.foreign {
+    grid-template-areas: 
+    "citizenship . . "
+    "foreignSurname . foreignName"
+    "info info info"
+    "number country type"
+    "radio radio radio"
+    "surname . name"
+    ;
+}
+
+.success-sent {
+    text-align: center;
+}
+
+.submit {
+    display: flex;
+    margin: $smaller-margin auto;
+}
+
+// @media (max-width: 460px) {
+
+// }
